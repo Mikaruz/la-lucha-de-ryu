@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9009146193185347467}
-  - component: {fileID: 5222499058363744892}
+  - component: {fileID: 5373858408863821455}
   m_Layer: 7
   m_Name: Area (1)
   m_TagString: Untagged
@@ -25,29 +25,45 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663558084859677184}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.687, y: 0.007, z: 0}
+  m_LocalPosition: {x: -0.436, y: -0.037, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7468055991455896604}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &5222499058363744892
-CircleCollider2D:
+--- !u!60 &5373858408863821455
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663558084859677184}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.87, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.22
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.63519716, y: 0.22373158}
+      - {x: 0.54338616, y: 0.029741853}
+      - {x: 0.50527936, y: 0.011940956}
+      - {x: 0.4583676, y: -0.038118124}
+      - {x: 0.5564339, y: -0.074359894}
+      - {x: 0.92916906, y: -0.051311493}
+      - {x: 0.9105511, y: 0.21521473}
 --- !u!1 &7468055990162412708
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,7 +136,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7468055990835410830}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.043, y: -0.165, z: -0.0010687718}
+  m_LocalPosition: {x: -0.041, y: -0.163, z: -0.0010687718}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -188,9 +204,9 @@ MonoBehaviour:
   playerAware: 3
   aimingTime: 0.5
   shootingTime: 1.5
-  ataque: {fileID: 5222499058363744892}
+  ataque: {fileID: 5373858408863821455}
   damage: 1
-  rango: {fileID: 1663558084859677184}
+  damageCooldown: 0.1
 --- !u!212 &7468055991455896579
 SpriteRenderer:
   m_ObjectHideFlags: 0

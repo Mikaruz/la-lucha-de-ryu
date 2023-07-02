@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
 	private Weapon _weapon;
 	private AudioSource _audio;
 
-	public CircleCollider2D ataque;
+	public PolygonCollider2D ataque;
 
 	// Movimiento
 	private Vector2 _movement;
@@ -25,12 +25,12 @@ public class EnemyController : MonoBehaviour
 	private bool _isAttacking;
 	public int damage = 1;
 
-	public GameObject rango;
+	
 
 	private PlayerHealth vida;
 
 
-	private bool AnimacionAtaque = false;
+	
 	void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody2D>();
@@ -38,7 +38,6 @@ public class EnemyController : MonoBehaviour
 		_weapon = GetComponentInChildren<Weapon>();
 		_audio = GetComponent<AudioSource>();
 
-		rango = FindObjectOfType<GameObject>();
 		vida = GetComponent<PlayerHealth>();
 	}
 
@@ -72,7 +71,7 @@ public class EnemyController : MonoBehaviour
 				Flip();
 			}
 		}
-		Debug.Log("ESTADO:" +  AnimacionAtaque);
+		
 
 	}
 
@@ -106,26 +105,45 @@ public class EnemyController : MonoBehaviour
 		if (_isAttacking == false && collision.CompareTag("Player"))
 		{
 			StartCoroutine("AimAndShoot");
-			
+			if (collision.CompareTag("Player"))
+			{
+
+				StartCoroutine(DamageCooldownCoroutine(collision));
+				//collision.SendMessageUpwards("AddDamage", damage);
+				Debug.Log("Se detectó una colisión con un CircleCollider2D");
+
+				
+			}
 		}
+
+		
 	}
 
+	private bool canDamage = true;
+	private float damageCooldown = 1.1f;
 
+	private IEnumerator DamageCooldownCoroutine(Collider2D collision)
+	{
+		
+		ataque.enabled = true;
+		yield return new WaitForSeconds(damageCooldown);
+		
+
+		collision.SendMessageUpwards("AddDamage", damage);
+		ataque.enabled = false;
+		yield return new WaitForSeconds(damageCooldown);
+		
+
+	}
 
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.GetComponent<CircleCollider2D>() != null && collision.CompareTag("Player"))
-		{
-			// Realiza acciones específicas para CircleCollider2D
-			collision.SendMessageUpwards("AddDamage", damage);
-			Debug.Log("Se detectó una colisión con un CircleCollider2D");
-			ataque.enabled = false;
-		}
+		
 	}
 
 
-
+	
 
 	private void Flip()
 	{
@@ -141,7 +159,7 @@ public class EnemyController : MonoBehaviour
 
 		yield return new WaitForSeconds(aimingTime);
 
-		ataque.enabled = true;
+		
 		_animator.SetTrigger("Shoot");
 		
 
@@ -152,17 +170,19 @@ public class EnemyController : MonoBehaviour
 
 	void CanShoot()
 	{
-		Debug.Log(AnimacionAtaque);
-		Debug.Log("ATAQUE -1");
-		AnimacionAtaque = true;
 
-		vida.AddDamage(1);
+		
+		
+		Debug.Log("ATAQUE -1");
+		
+
+		
 		if (_weapon != null)
 		{
 			_weapon.Shoot();
 			_audio.Play();
 		}
-		
+
 		
 	}
 
@@ -171,13 +191,15 @@ public class EnemyController : MonoBehaviour
 
 	private void OnEnable()
 	{
-		_isAttacking = false;
-		AnimacionAtaque = false;
 		ataque.enabled = false;
+		_isAttacking = false;
+		
+		
 	}
 
 	private void OnDisable()
 	{
+		ataque.enabled = false;
 		StopCoroutine("AimAndShoot");
 		_isAttacking = false;
 	}
