@@ -81,6 +81,13 @@ public class PlayerHealth : MonoBehaviour
 		Debug.Log("Player got some life. His current health is " + health);
 	}
 
+
+
+	
+
+
+
+
 	private IEnumerator VisualFeedback()
 	{
 		_renderer.color = Color.red;

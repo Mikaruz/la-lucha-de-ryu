@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - Big Bullet
   - Enemy 2
+  - ZombieDamage
   layers:
   - Default
   - TransparentFX

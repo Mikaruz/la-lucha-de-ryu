@@ -1,8 +1,8 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyPatrol : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
 	public float speed = 1f;
 	public float wallAware = 0.5f;
@@ -16,18 +16,30 @@ public class EnemyPatrol : MonoBehaviour
 	private Weapon _weapon;
 	private AudioSource _audio;
 
+	public CircleCollider2D ataque;
+
 	// Movimiento
 	private Vector2 _movement;
 	private bool _facingRight;
 
 	private bool _isAttacking;
+	public int damage = 1;
 
+	public GameObject rango;
+
+	private PlayerHealth vida;
+
+
+	private bool AnimacionAtaque = false;
 	void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody2D>();
 		_animator = GetComponent<Animator>();
 		_weapon = GetComponentInChildren<Weapon>();
 		_audio = GetComponent<AudioSource>();
+
+		rango = FindObjectOfType<GameObject>();
+		vida = GetComponent<PlayerHealth>();
 	}
 
 	// Start is called before the first frame update
@@ -60,6 +72,7 @@ public class EnemyPatrol : MonoBehaviour
 				Flip();
 			}
 		}
+		Debug.Log("ESTADO:" +  AnimacionAtaque);
 
 	}
 
@@ -85,13 +98,34 @@ public class EnemyPatrol : MonoBehaviour
 		_animator.SetBool("Idle", _rigidbody.velocity == Vector2.zero);
 	}
 
+
+
+
 	private void OnTriggerStay2D(Collider2D collision)
 	{
 		if (_isAttacking == false && collision.CompareTag("Player"))
 		{
 			StartCoroutine("AimAndShoot");
+			
 		}
 	}
+
+
+
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.gameObject.GetComponent<CircleCollider2D>() != null && collision.CompareTag("Player"))
+		{
+			// Realiza acciones específicas para CircleCollider2D
+			collision.SendMessageUpwards("AddDamage", damage);
+			Debug.Log("Se detectó una colisión con un CircleCollider2D");
+			ataque.enabled = false;
+		}
+	}
+
+
+
 
 	private void Flip()
 	{
@@ -107,6 +141,7 @@ public class EnemyPatrol : MonoBehaviour
 
 		yield return new WaitForSeconds(aimingTime);
 
+		ataque.enabled = true;
 		_animator.SetTrigger("Shoot");
 		
 
@@ -117,16 +152,28 @@ public class EnemyPatrol : MonoBehaviour
 
 	void CanShoot()
 	{
+		Debug.Log(AnimacionAtaque);
+		Debug.Log("ATAQUE -1");
+		AnimacionAtaque = true;
+
+		vida.AddDamage(1);
 		if (_weapon != null)
 		{
 			_weapon.Shoot();
 			_audio.Play();
 		}
+		
+		
 	}
+
+
+
 
 	private void OnEnable()
 	{
 		_isAttacking = false;
+		AnimacionAtaque = false;
+		ataque.enabled = false;
 	}
 
 	private void OnDisable()
