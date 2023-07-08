@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-	public int totalHealth = 3;
-	public int maxHealth = 18;
+	public int totalHealth = 5;
+	public int maxHealth = 5;
 
 	public RectTransform heartUI;
 	public RectTransform gameOverUI;
@@ -13,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
 	[SerializeField] private float cantidadPuntos;
 	[SerializeField] private Puntaje puntaje;
 
+	public Image barraVida;
 
 	public Transform startPoint;
 
@@ -32,9 +34,12 @@ public class PlayerHealth : MonoBehaviour
 	private Animator _animator;
 	private PlayerController _controller;
 
+    private void Update()
+    {
+		barraVida.fillAmount = health / maxHealth;
+    }
 
-
-	private void Awake()
+    private void Awake()
 	{
 		_renderer = GetComponent<SpriteRenderer>();
 		_animator = GetComponent<Animator>();
